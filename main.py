@@ -19,6 +19,13 @@ class MyClient(discord.Client):
     async def setup_hook(self) -> None:
         await self.tree.sync(guild=TEST_GUILD)
 
+    async def on_message(self, message):
+        if message.author == client.user:
+            return
+
+        if message.content.startswith("!outsource-sadia"):
+            await message.channel.send("!sadia")
+
 
 class Feedback(discord.ui.Modal, title="Feedback"):
     name = discord.ui.TextInput(
