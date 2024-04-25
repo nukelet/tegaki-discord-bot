@@ -7,7 +7,7 @@ sessions on Discord and post the results.
 
 First, clone and enter this repo:
 ```bash
-$ git clone https://github.com/nukelet/tegaki-discord-bot
+$ git clone https://github.com/nukelet/tegaki-discord-bot --recurse-submodules
 ```
 
 Make sure you have Python installed:
