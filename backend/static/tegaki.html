@@ -25,6 +25,7 @@
   <script src="/static/tegaki/js/pressure.js"></script>
   <script src="/static/tegaki/js/replayevents.js"></script>
   <script src="/static/tegaki/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -32,7 +33,22 @@
     var w = window.open('');
     
     Tegaki.flatten().toBlob(
-      function(b) { w.location = URL.createObjectURL(b); },
+      function(b) {axios.get('/user/ohnah', {
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      }),
+      axios.post('/image', {
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })},
       'image/png'
     );
   }

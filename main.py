@@ -3,6 +3,7 @@ from discord import app_commands
 from dotenv import dotenv_values
 import traceback
 
+# Server Id
 TEST_GUILD = discord.Object(843876847203778563)
 
 class MyClient(discord.Client):
@@ -25,7 +26,6 @@ class MyClient(discord.Client):
 
         if message.content.startswith("!outsource-sadia"):
             await message.channel.send("!sadia")
-
 
 class Feedback(discord.ui.Modal, title="Feedback"):
     name = discord.ui.TextInput(

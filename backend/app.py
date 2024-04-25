@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import request, Flask, jsonify
 from markupsafe import escape
 
 app = Flask("tegaki")
@@ -14,3 +14,8 @@ def show_post(post_id):
 @app.route("/path/<path:subpath>")
 def show_subpath(subpath):
     return f"Subpath {escape(subpath)}"
+
+@app.route("/image", methods=['POST'])
+def upload():
+    return f"Posted image"
+
