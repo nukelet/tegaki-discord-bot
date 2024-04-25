@@ -20,5 +20,5 @@ $ flask --app backend init-db
 
 ## Generating API keys
 ```bash
-$ flask --app backend generate-api-keys
+$ flask --app backend generate-api-key
 ```
