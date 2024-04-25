@@ -3,6 +3,8 @@ import sqlite3
 import click
 from flask import current_app, g
 
+
+# get database information
 def get_db():
     if 'db' not in g:
         g.db = sqlite3.connect(
@@ -13,13 +15,13 @@ def get_db():
 
     return g.db
 
-
+# close database information
 def close_db(e=None):
     db = g.pop('db', None)
     if db is not None:
         db.close()
 
-
+# start database
 def init_db():
     db = get_db()
     with current_app.open_resource('schema.sql') as f:

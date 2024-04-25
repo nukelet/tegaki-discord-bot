@@ -13,8 +13,10 @@ import secrets
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
+
 @bp.route("/", methods=["PUT"])
 def authenticate():
+    #Gets user key from the request  // ADD CONTINGENCY INCASE NO KEY
     user_key = request.form["user_key"]
     db = get_db()
 
@@ -31,6 +33,7 @@ def authenticate():
         abort(403, f"Invalid user_key")
 
     session.clear()
+    #Clears session cookie and replaces it with user id from db
     session["user_id"] = result["user_id"]
     return ({"success": True}, 200)
 
@@ -43,6 +46,7 @@ def generate_api_key():
     # generate a random token with 16 bytes
     user_key = secrets.token_hex(16)
 
+    # Inserts authentication keys into DB
     db.execute(
         "INSERT INTO api_auth (user_id, user_key) VALUES (?, ?)",
         (user_id, user_key)
