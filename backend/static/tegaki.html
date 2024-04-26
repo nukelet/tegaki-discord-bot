@@ -30,21 +30,30 @@
 <body>
 <script type="text/javascript">
   function onTegakiDone() {
-    var w = window.open('');
-    
+    let w = window.open('');
+    let formData =  new FormData();
+    axios.get('http://127.0.0.1:5000/hello', {
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
     Tegaki.flatten().toBlob(
-      function(b) {axios.get('/user/ohnah', {
+      function(b) {
+      w.location = URL.createObjectURL(b);
+      console.log(b, " test");
+      formData.append("image", b)
+      console.log(formData);
+      axios.post('http://127.0.0.1:5000/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       })
       .then(function (response) {
         console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      }),
-      axios.post('/image', {
-      })
-      .then(function (response) {
-        console.log(response);
+        console.log(b);
       })
       .catch(function (error) {
         console.log(error);

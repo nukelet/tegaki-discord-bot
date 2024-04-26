@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 
-from backend import db, api_auth
+from backend import db, api_auth, upload
 
 import secrets
 
@@ -21,13 +21,17 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route("/hello")
+    @app.route("/hello", methods=['GET'])
     def hello():
         return "Hello, World!"
+    hello()
 
     db.init_app(app)
     api_auth.init_app(app)
 
+    #blueprints
     app.register_blueprint(api_auth.bp)
+    app.register_blueprint(upload.bp)
+    # app.add_url_rule('/', endpoint='index')
 
     return app
