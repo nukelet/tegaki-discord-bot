@@ -44,7 +44,8 @@
       function(b) {
       w.location = URL.createObjectURL(b);
       console.log(b, " test");
-      formData.append("image", b)
+      // Puts blob in a formData object
+      formData.append("image", b, "image")
       console.log(formData);
       axios.post('http://127.0.0.1:5000/upload', formData, {
         headers: {
@@ -57,8 +58,7 @@
       })
       .catch(function (error) {
         console.log(error);
-      })},
-      'image/png'
+      })}
     );
   }
   

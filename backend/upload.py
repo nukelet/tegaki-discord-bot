@@ -1,12 +1,11 @@
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for, current_app
 )
-
 import os
-
+from werkzeug.utils import secure_filename
 from werkzeug.exceptions import abort
 
-UPLOAD_FOLDER = "../instance/images"
+UPLOAD_FOLDER = ""
 ALLOWED_EXTENSIONS = {'png', 'jpeg'}
 
 bp = Blueprint('upload', __name__)
@@ -14,15 +13,21 @@ bp = Blueprint('upload', __name__)
 @bp.route('/upload', methods=['POST'])
 def upload():
     try:
+        if 'image' not in request.files:
+            print('No image part')
+            return
         image = request.files.get('image', '')
-        print(request.files)
+
         print(image)
-        if image is not None:
-            print("image recieved!")
-        filename = "test blob"
+        filename = secure_filename(image.filename) + ".png"
+        # Change UPLOAD_FOLDER value in function in order to avoid startup errors
+        UPLOAD_FOLDER = current_app.instance_path
         createImageFolder(UPLOAD_FOLDER)
         current_app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-        return "image uploaded"
+        print((os.path.join(current_app.config['UPLOAD_FOLDER'])), " upload path")
+
+        image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], "images", filename))
+        return "'"
     except Exception as err:
         abort(err)
      
