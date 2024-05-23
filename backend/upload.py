@@ -16,6 +16,7 @@ def upload():
         if 'image' not in request.files:
             print('No image part')
             return
+        # Get image file and store it
         image = request.files.get('image', '')
 
         print(image)
@@ -36,7 +37,7 @@ def upload():
 #Create image folder and throw error if unable to
 def createImageFolder(path):
     try:
-        os.makedirs(path, exist_ok = True)
+        os.makedirs(path + "/images", exist_ok = True)
         print ("image directory made!")
     except OSError as error:
         print ("image directory could not be made")

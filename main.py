@@ -2,9 +2,11 @@ import discord
 from discord import app_commands
 from dotenv import dotenv_values
 import traceback
+import os
 
 # Server Id
 TEST_GUILD = discord.Object(843876847203778563)
+
 
 class MyClient(discord.Client):
     def __init__(self) -> None:
@@ -19,13 +21,23 @@ class MyClient(discord.Client):
 
     async def setup_hook(self) -> None:
         await self.tree.sync(guild=TEST_GUILD)
-
+    
     async def on_message(self, message):
+        
+        dirname = os.path.dirname(os.path.abspath(__file__))
+        print(dirname)
+        file = discord.File(os.path.join(dirname, "instance/images/image.png"), filename="image.png")
+        embed = discord.Embed()
+        embed.set_image(url="attachment://image.png")
+
         if message.author == client.user:
             return
 
         if message.content.startswith("!outsource-sadia"):
             await message.channel.send("!sadia")
+
+        if message.content.startswith("!test-tegaki"):
+            await message.channel.send(file=file, embed=embed)
 
 class Feedback(discord.ui.Modal, title="Feedback"):
     name = discord.ui.TextInput(
