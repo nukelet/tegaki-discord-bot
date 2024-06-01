@@ -16,7 +16,7 @@ bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 @bp.route("/", methods=["PUT"])
 def authenticate():
-    #Gets user key from the request  // ADD CONTINGENCY INCASE NO KEY
+    # gets user key from the request
     user_key = request.form["user_key"]
     db = get_db()
 
@@ -26,14 +26,14 @@ def authenticate():
     # verify the provided key
     result = db.execute(
         "SELECT * FROM api_auth WHERE user_key = ?",
-        (user_key)
+        (user_key,)
     ).fetchone()
 
     if result is None:
         abort(403, f"Invalid user_key")
 
+    # clears session cookie and replaces it with user id from db
     session.clear()
-    #Clears session cookie and replaces it with user id from db
     session["user_id"] = result["user_id"]
     return ({"success": True}, 200)
 
@@ -46,11 +46,17 @@ def generate_api_key():
     # generate a random token with 16 bytes
     user_key = secrets.token_hex(16)
 
-    # Inserts authentication keys into DB
-    db.execute(
-        "INSERT INTO api_auth (user_id, user_key) VALUES (?, ?)",
-        (user_id, user_key)
-    )
+    try:
+        # Inserts authentication keys into DB
+        db.execute(
+            "INSERT INTO api_auth (user_id, user_key) VALUES (?, ?)",
+            (user_id, user_key),
+        )
+
+        db.commit()
+    except Exception as e:
+        click.echo(f"Unable to create API key: \"{e}\"")
+        return;
 
     click.echo(f"Your API key: {user_key}")
     click.echo(f"Your API user ID: {user_id}")
