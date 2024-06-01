@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, redirect, url_for
 
 from backend import db, api_auth, upload
 
@@ -21,10 +21,11 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route("/hello", methods=['GET'])
-    def hello():
-        return "Hello, World!"
-    hello()
+    @app.route("/", methods=['GET'])
+    # redirects to tegaki instance
+    def redirectRoute():
+        return redirect('/static/tegaki.html', code=302)
+    redirectRoute
 
     db.init_app(app)
     api_auth.init_app(app)
